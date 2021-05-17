@@ -26,10 +26,17 @@ module Simpler
 
     def add_route(method, path, route_poin)
       route_poin = route_poin.split('#')
+      controller = controller_from_string(route_poin[0])
       action = route_poin[1]
-      route = Route.new(method, path, Controller, action)
+      route = Route.new(method, path, controller, action)
 
       @routes.push(route)
+    end
+
+    private
+
+    def controller_from_string(controller_name)
+      Object.const_get("#{controller_name.capitalize}Controller")
     end
 
   end
