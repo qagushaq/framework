@@ -1,3 +1,3 @@
-require_relative 'config/enviroment'
+require_relative 'config/environment'
 
 run Simpler.application
