@@ -1,3 +1,4 @@
+require_relative 'view'
 module Simpler
   class Controller
 
@@ -7,14 +8,26 @@ module Simpler
     end
 
     def make_response(action)
-      [
-        200,
-        { 'Content-Type' => 'text/plain',
-          'X-Simpler-Controller' => self.class.name,
-          'X-Simpler-action' => action
-        },
-        ["Simpler framework in action!\n"]
-      ]
+      set_default_headers
+      write_response
+
+      @response.finish
+    end
+
+    private
+
+    def set_default_headers
+      @response['Content-Type'] = 'text/html'
+    end
+
+    def write_response
+      body = render_body
+
+      @response.write(body)
+    end
+
+    def render_body
+      View.new(@request.env).render
     end
 
   end
