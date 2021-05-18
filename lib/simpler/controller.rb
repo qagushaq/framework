@@ -14,6 +14,7 @@ module Simpler
       @request.env['simpler.controller'] = self
       @request.env['simpler.action'] = action
 
+      send(action)
       set_default_headers
       write_response
 
@@ -37,7 +38,11 @@ module Simpler
     end
 
     def render_body
-      View.new(@request.env).render
+      View.new(@request.env).render(binding)
+    end
+
+    def render(template)
+      @request.env['simpler.template'] = template
     end
 
   end
